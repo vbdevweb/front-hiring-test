@@ -1,0 +1,27 @@
+$kombo-blue: #208cfb;
+$kombo-yellow: #ffd720;
+$default-text: #132968;
+
+$background-white: #f1f3f6;
+$background-darker: #ecf4fd;
+
+$white: #ffffff;
+$grey: #838383;
+$lightgrey: #d7d7d7;
+
+$shadow-color: #0d2736;
+
+:root {
+	--kombo-blue: $kombo-blue;
+	--kombo-yellow: $kombo-yellow;
+	--default-text: $default-text;
+
+	--background-white: $background-white;
+	--background-darker: $background-darker;
+
+	--white: $white;
+	--grey: $grey;
+	--lightgrey: $lightgrey;
+
+	--shadow-color: $shadow-color;
+}
