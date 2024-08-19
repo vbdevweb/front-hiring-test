@@ -1,1 +1,124 @@
 
+@import "../assets/css/variables.scss";
+@import "../assets/css/breakpoints.scss";
+
+.ticket-info {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.ticket {
+		position: relative;
+		display: flex;
+		width: 100%;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background: $white;
+		box-shadow: 0px 2px 3px rgba($shadow-color, 0.2);
+		border-radius: 13px;
+		@include res("md-xxl") {
+			max-width: 343px;
+		}
+		.ticket--date {
+			padding: 0;
+			height: 25px;
+			font-weight: 600;
+			font-size: 14px;
+			line-height: 17px;
+			display: flex;
+			align-items: center;
+			text-align: center;
+			color: $kombo-blue;
+			border-bottom: rgba($shadow-color, 0.2) 1px solid;
+			width: 100%;
+			justify-content: center;
+			margin-bottom: 16px;
+		}
+		.ticket--trip {
+			margin-left: 36px;
+			margin-bottom: 36px;
+		}
+		.departure--time,
+		.arrival--time {
+			position: absolute;
+			left: 15px;
+			font-style: normal;
+			font-weight: 600;
+			font-size: 11px;
+			line-height: 13px;
+			display: flex;
+			align-items: center;
+			text-align: right;
+			color: $default-text;
+		}
+		.departure--location,
+		.arrival--location {
+			line-height: 17px;
+			color: $default-text;
+			font-weight: 700;
+			p {
+				margin: 0;
+			}
+			.location--station {
+				margin: 4px 0 0 0;
+				padding: 0;
+				font-weight: 400;
+				font-size: 12px;
+				display: flex;
+				align-items: flex-end;
+				color: $grey;
+			}
+		}
+		.trip--transport-type {
+			padding: 8px 0;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			align-items: center;
+			.transport-type--companies {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+			}
+		}
+		.ticket--price {
+			padding: 4px 0;
+			width: 100%;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			background: rgba(5, 123, 255, 0.15);
+			border-radius: 0px 0px 13px 13px;
+			font-weight: 600;
+			font-size: 14px;
+			text-align: center;
+			color: $kombo-blue;
+		}
+	}
+	.button {
+		margin-top: 8px;
+		padding: 16px;
+		border: none;
+		cursor: pointer;
+		outline: none;
+		width: 100%;
+		font-size: 18px;
+		text-align: center;
+		text-decoration: none;
+		font-weight: 600;
+		border-radius: 10px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: $kombo-yellow;
+		color: $default-text;
+		box-shadow: 0px 2px 5px 0px rgba($shadow-color, 0.2);
+		transition: background-color 0.2s ease-in-out;
+		&:hover {
+			background-color: darken($kombo-yellow, 7%);
+		}
+		@include res("md-xxl") {
+			max-width: 343px;
+		}
+	}
+}
