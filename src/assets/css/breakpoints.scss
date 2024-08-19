@@ -1,1 +1,82 @@
 
+@mixin res($preset: "", $min_width: 0, $max_width: 0) {
+	$presets: (
+		"sm": (
+			min: null,
+			max: 767px,
+		),
+		"md": (
+			min: 768px,
+			max: 1023px,
+		),
+		"sm-md": (
+			min: null,
+			max: 1023px,
+		),
+		"md-xl": (
+			min: 768px,
+			max: 1023px,
+		),
+		"md-xxl": (
+			min: 768px,
+			max: null,
+		),
+		"lg": (
+			min: 1024px,
+			max: 1299px,
+		),
+		"lg-xl": (
+			min: 1024px,
+			max: 1920px,
+		),
+		"lg-xxl": (
+			min: 1024px,
+			max: null,
+		),
+		"xl": (
+			min: 1300px,
+			max: 1920px,
+		),
+		"xxl": (
+			min: 1921px,
+			max: null,
+		),
+	);
+
+	@if $preset != "" {
+		$preset_value: map-get($presets, $preset);
+
+		@if $preset_value {
+			$min_width: map-get($preset_value, min);
+			$max_width: map-get($preset_value, max);
+
+			@if $min_width==null and $max_width!=null {
+				@media screen and (max-width: $max_width) {
+					@content;
+				}
+			} @else if $min_width!=null and $max_width==null {
+				@media screen and (min-width: $min_width) {
+					@content;
+				}
+			} @else {
+				@media screen and (min-width: $min_width) and (max-width: $max_width) {
+					@content;
+				}
+			}
+		} @else {
+			@warn "Unknown preset: #{$preset}.";
+		}
+	} @else if $min_width == 0 {
+		@media screen and (max-width: $max_width) {
+			@content;
+		}
+	} @else if $max_width == 0 {
+		@media screen and (min-width: $min_width) {
+			@content;
+		}
+	} @else {
+		@media screen and (min-width: $min_width) and (max-width: $max_width) {
+			@content;
+		}
+	}
+}
