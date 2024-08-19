@@ -1,49 +1,80 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { Ticket } from "../../types";
 import { CompanyLogo } from "../CompanyLogo";
 import { TransportIcon } from "../TransportIcon";
-import styles from "./TicketResult.module.css";
-
-const parseTime = (date: string) => {
-  const time = new Date(date).toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-  return time;
-};
+import styles from "./TicketResult.module.scss";
+import Time from "../../assets/svg/time.svg";
+import LineTrip from "../../assets/svg/Linetrip.svg";
+import { useTicket } from "../../components/TicketContext";
+import { Api } from "../../service/api";
 
 export default function TicketResult({ ticket }: { ticket: Ticket }) {
-  if (!ticket) return null;
+	if (!ticket) return null;
 
-  const companySlugs = ticket.segments.map((segment) => segment.companySlug);
+	const { setUserTicket } = useTicket();
 
-  const firstTrip = ticket.segments[0];
-  const lastTrip = ticket.segments[ticket.segments.length - 1];
+	const handleClick = () => {
+		setUserTicket(ticket);
+	};
 
-  // sample ways to use the data:
-  const price = Math.round(ticket.price) + " €";
-  const departureTime = parseTime(firstTrip.departure.time);
-  const arrivalTime = parseTime(lastTrip.arrival.time);
+	const ticketInfo = Api.getTicketInformation(ticket);
 
-  return (
-    <Link to="/ticket">
-      <div className={styles["ticket"]}>
-        <div>
-          {/* we will always only display the first transport type */}
-          <TransportIcon transportType={firstTrip.transportType} />
+	return (
+		<Link to="/ticket" className={styles["ticket"]} onClick={handleClick}>
+			<div className={styles["ticket--header"]}>
+				<div className={styles["header--transport"]}>
+					{/* we will always only display the first transport type */}
+					<div className={styles["transport--icon"]}>
+						<TransportIcon transportType={ticketInfo.transportType} />
+					</div>
 
-          {/* we will always display all the companies */}
-          {companySlugs.map((slug, i) => (
-            <div key={i} className={styles["company-logo"]}>
-              <CompanyLogo companySlug={slug} />
-            </div>
-          ))}
-        </div>
+					{/* we will always display all the companies */}
+					<div className={styles["transport--companies"]}>
+						{ticketInfo.companySlugs.map((slug, i) => (
+							<div key={i} className={styles["company-logo"]}>
+								<CompanyLogo companySlug={slug} />
+							</div>
+						))}
+					</div>
+				</div>
+				<div className={styles["header--duration"]}>
+					<Time />
+					{ticketInfo.duration}
+				</div>
+			</div>
 
-        {/* its your job to make this pretty :) */}
-        <p>{JSON.stringify(ticket)}</p>
-      </div>
-    </Link>
-  );
+			<div className={styles["ticket--info"]}>
+				<div className={styles["info--trip"]}>
+					<div className={styles["trip--departure-arrival-time"]}>
+						<div className={styles["departure-time"]}>
+							{ticketInfo.departure.time}
+						</div>
+						<div className={styles["arrival-time"]}>
+							{ticketInfo.arrival.time}
+						</div>
+					</div>
+					<div className={styles["trip--departure-arrival"]}>
+						<div className={styles["departure-arrival--line-trip"]}>
+							<LineTrip />
+						</div>
+						<div className={styles["departure-arrival--stations"]}>
+							<p className={styles["stations--departure"]}>
+								<span className={styles["departure--city"]}>
+									{ticketInfo.departure.city}
+								</span>{" "}
+								{ticketInfo.departure.station}
+							</p>
+							<p className={styles["stations--arrival"]}>
+								<span className={styles["arrival--city"]}>
+									{ticketInfo.arrival.city}
+								</span>{" "}
+								{ticketInfo.arrival.station}
+							</p>
+						</div>
+					</div>
+				</div>
+				<div className={styles["info--price"]}>{ticketInfo.price}</div>
+			</div>
+		</Link>
+	);
 }
